@@ -1,0 +1,1 @@
+Final synchronized Touchstone 3 FitLife project. Header/logo colors use navy #1E3A5F and orange #F97316 consistently. Footer uses: FitLife Fitness Center | United States | fitlife@kal.com | +1 (656) 565-6545. Includes HTML, CSS, JavaScript, localStorage, sessionStorage, accessibility labels, and responsive design.
