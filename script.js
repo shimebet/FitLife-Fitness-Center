@@ -1,73 +1,101 @@
 
-document.addEventListener('DOMContentLoaded', () => {
-  const toggle = document.querySelector('.menu-toggle');
-  const nav = document.querySelector('.site-nav');
-  if (toggle && nav) {
-    toggle.addEventListener('click', () => {
-      const open = nav.classList.toggle('open');
-      toggle.setAttribute('aria-expanded', String(open));
+document.addEventListener("DOMContentLoaded", function () {
+  const CART_KEY = "fitlifeShoppingCart";
+  const NEWSLETTER_KEY = "fitlifeNewsletterEmail";
+  const FEEDBACK_KEY = "fitlifeCustomerFeedback";
+  const CUSTOM_ORDER_KEY = "fitlifeCustomOrders";
+
+  function readJSON(storage, key, fallback) {
+    try { return JSON.parse(storage.getItem(key)) || fallback; }
+    catch (error) { return fallback; }
+  }
+
+  function getCart() { return readJSON(sessionStorage, CART_KEY, []); }
+  function saveCart(cart) { sessionStorage.setItem(CART_KEY, JSON.stringify(cart)); }
+  function money(value) { return "$" + Number(value || 0).toFixed(2); }
+
+
+
+  const menuToggle = document.querySelector(".menu-toggle");
+  const siteNav = document.querySelector(".site-nav");
+  if (menuToggle && siteNav) {
+    menuToggle.addEventListener("click", function () {
+      siteNav.classList.toggle("open");
+      const isOpen = siteNav.classList.contains("open");
+      menuToggle.setAttribute("aria-expanded", String(isOpen));
     });
   }
 
-  const subscribeForm = document.getElementById('subscribeForm');
-  if (subscribeForm) {
-    subscribeForm.addEventListener('submit', (event) => {
-      event.preventDefault();
-      const email = document.getElementById('subscribeEmail').value.trim();
-      localStorage.setItem('fitlifeSubscriber', email);
-      document.getElementById('subscribeMessage').textContent = 'Thank you for subscribing!';
-      subscribeForm.reset();
+  function renderCart() {
+    const cartItems = document.getElementById("cartItems");
+    const cartTotal = document.getElementById("cartTotal");
+    if (!cartItems || !cartTotal) return;
+    const cart = getCart();
+    cartItems.innerHTML = "";
+    let total = 0;
+    if (cart.length === 0) {
+      const empty = document.createElement("li");
+      empty.textContent = "Your cart is currently empty.";
+      cartItems.appendChild(empty);
+      cartTotal.textContent = "Total: $0.00";
+      return;
+    }
+    cart.forEach(function (item) {
+      total += Number(item.price || 0);
+      const li = document.createElement("li");
+      li.textContent = item.name + " - " + money(item.price);
+      cartItems.appendChild(li);
     });
+    cartTotal.textContent = "Total: " + money(total);
   }
 
-  const getCart = () => JSON.parse(localStorage.getItem('fitlifeCart') || '[]');
-  const saveCart = (cart) => localStorage.setItem('fitlifeCart', JSON.stringify(cart));
-  document.querySelectorAll('.add-to-cart').forEach(button => {
-    button.addEventListener('click', () => {
+  document.querySelectorAll(".add-to-cart").forEach(function (button) {
+    button.addEventListener("click", function () {
+      const item = { name: button.dataset.name || "FitLife item", price: Number(button.dataset.price || 0), addedAt: new Date().toISOString() };
       const cart = getCart();
-      cart.push({ name: button.dataset.name, price: Number(button.dataset.price) });
+      cart.push(item);
       saveCart(cart);
-      alert('Item added.');
+      alert("Item added.");
+      renderCart();
     });
   });
 
-  const modal = document.getElementById('cartModal');
-  const list = document.getElementById('cartItems');
-  const total = document.getElementById('cartTotal');
-  function renderCart() {
-    if (!list || !total) return;
-    const cart = getCart();
-    list.innerHTML = cart.length ? cart.map(item => `<li>${item.name} - $${item.price.toFixed(2)}</li>`).join('') : '<li>Your cart is empty.</li>';
-    total.textContent = `Total: $${cart.reduce((sum, item) => sum + item.price, 0).toFixed(2)}`;
-  }
-  const viewCart = document.getElementById('viewCart');
-  if (viewCart && modal) viewCart.addEventListener('click', () => { renderCart(); modal.classList.add('show'); });
-  const closeModal = document.querySelector('.close-modal');
-  if (closeModal && modal) closeModal.addEventListener('click', () => modal.classList.remove('show'));
-  const clearCart = document.getElementById('clearCart');
-  if (clearCart) clearCart.addEventListener('click', () => { saveCart([]); renderCart(); document.getElementById('cartMessage').textContent = 'Cart cleared.'; });
-  const processOrder = document.getElementById('processOrder');
-  if (processOrder) processOrder.addEventListener('click', () => { saveCart([]); renderCart(); alert('Thank you for your order.'); });
+  const viewCartBtn = document.getElementById("viewCartBtn");
+  if (viewCartBtn) viewCartBtn.addEventListener("click", function () { renderCart(); const modal = document.getElementById("cartModal"); if (modal) modal.hidden = false; });
+  const closeCartBtn = document.getElementById("closeCartBtn");
+  if (closeCartBtn) closeCartBtn.addEventListener("click", function () { document.getElementById("cartModal").hidden = true; });
+  const clearCartBtn = document.getElementById("clearCartBtn");
+  if (clearCartBtn) clearCartBtn.addEventListener("click", function () { sessionStorage.removeItem(CART_KEY); renderCart(); });
+  const processOrderBtn = document.getElementById("processOrderBtn");
+  if (processOrderBtn) processOrderBtn.addEventListener("click", function () { alert("Thank you for your order."); sessionStorage.removeItem(CART_KEY); renderCart(); document.getElementById("cartModal").hidden = true; });
+  const cartModal = document.getElementById("cartModal");
+  if (cartModal) cartModal.addEventListener("click", function (event) { if (event.target === cartModal) cartModal.hidden = true; });
+  document.addEventListener("keydown", function (event) { const modal = document.getElementById("cartModal"); if (event.key === "Escape" && modal) modal.hidden = true; });
 
-  const feedbackForm = document.getElementById('feedbackForm');
-  if (feedbackForm) {
-    feedbackForm.addEventListener('submit', (event) => {
-      event.preventDefault();
-      const request = { name: customerName.value, email: customerEmail.value, type: requestType.value, message: message.value };
-      sessionStorage.setItem('fitlifeFeedback', JSON.stringify(request));
-      feedbackMessage.textContent = 'Thank you. Your feedback/custom order request was saved for this session.';
-      feedbackForm.reset();
-    });
-  }
-
-  const membershipForm = document.getElementById('membershipForm');
-  if (membershipForm) {
-    membershipForm.addEventListener('submit', (event) => {
-      event.preventDefault();
-      const request = { name: memberName.value, email: memberEmail.value, plan: plan.value, goals: goals.value };
-      sessionStorage.setItem('fitlifeMembershipInterest', JSON.stringify(request));
-      membershipMessage.textContent = 'Thank you. Your membership interest form was saved for this session.';
-      membershipForm.reset();
-    });
-  }
+  document.querySelectorAll("form").forEach(function (form) {
+    const identity = (form.id + " " + form.className + " " + form.textContent).toLowerCase();
+    if (identity.includes("subscribe") || identity.includes("newsletter")) {
+      form.addEventListener("submit", function (event) {
+        const email = form.querySelector("input[type='email']");
+        if (email && email.value.trim()) { localStorage.setItem(NEWSLETTER_KEY, email.value.trim()); alert("Thank you for subscribing."); }
+      });
+    }
+    if (form.id === "feedbackForm" || identity.includes("feedback") || identity.includes("custom order")) {
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        const data = new FormData(form);
+        const type = data.get("type") || "Customer Feedback";
+        const record = { name: data.get("name") || "", email: data.get("email") || "", type: type, message: data.get("message") || "", submittedAt: new Date().toISOString() };
+        const storageKey = type.toLowerCase().includes("custom") ? CUSTOM_ORDER_KEY : FEEDBACK_KEY;
+        const saved = readJSON(localStorage, storageKey, []);
+        saved.push(record);
+        localStorage.setItem(storageKey, JSON.stringify(saved));
+        const status = document.getElementById("feedbackStatus");
+        if (status) status.textContent = "Thank you. Your " + type.toLowerCase() + " was saved in localStorage.";
+        else alert("Thank you. Your request was saved in localStorage.");
+        form.reset();
+      });
+    }
+  });
+  renderCart();
 });

@@ -1,4 +1,8 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>FitLife Fitness Center | Gallery</title><link rel="stylesheet" href="styles.css"></head><body><header class="site-header">
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>FitLife Fitness Center | Gallery</title><link rel="stylesheet" href="styles.css"></head>
+<body>
+<header class="site-header">
   <a class="skip-link" href="#main">Skip to main content</a>
   <div class="brand"><span class="logo-mark">FL</span><span>FitLife Fitness Center</span></div>
   <button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">Menu</button>
@@ -8,12 +12,43 @@
     <a href="about.html">About Us</a>
     <a href="membership.html">Membership</a>
   </nav>
-</header><main id="main">
-<section class="page-hero"><h1>Gallery and Shop</h1><p>Explore facilities and purchase class passes, training services, and wellness products.</p><button id="viewCart" class="btn">View Shopping Cart</button></section>
-<section><h2>Product and Service Table</h2><div class="table-wrap"><table class="shop-table"><thead><tr><th>Image</th><th>Item</th><th>Description</th><th>Price</th><th>Cart</th></tr></thead><tbody><tr><td><img class="table-img" src="images/group-training.svg" alt="Class Pass"></td><td>Class Pass</td><td>Drop-in access to one group class.</td><td>$18</td><td><button class="btn add-to-cart" data-name="Class Pass" data-price="18">Add to Cart</button></td></tr><tr><td><img class="table-img" src="images/yoga-class.svg" alt="Yoga Mat"></td><td>Yoga Mat</td><td>Comfortable mat for stretching and recovery.</td><td>$25</td><td><button class="btn add-to-cart" data-name="Yoga Mat" data-price="25">Add to Cart</button></td></tr><tr><td><img class="table-img" src="images/nutrition-corner.svg" alt="Water Bottle"></td><td>Water Bottle</td><td>Reusable bottle for workouts and classes.</td><td>$12</td><td><button class="btn add-to-cart" data-name="Water Bottle" data-price="12">Add to Cart</button></td></tr><tr><td><img class="table-img" src="images/personal-training.svg" alt="Personal Training Session"></td><td>Personal Training Session</td><td>One private coaching session.</td><td>$55</td><td><button class="btn add-to-cart" data-name="Personal Training Session" data-price="55">Add to Cart</button></td></tr><tr><td><img class="table-img" src="images/cycling-class.svg" alt="Cycling Pass"></td><td>Cycling Pass</td><td>High-energy cardio class entry.</td><td>$20</td><td><button class="btn add-to-cart" data-name="Cycling Pass" data-price="20">Add to Cart</button></td></tr><tr><td><img class="table-img" src="images/functional-training.svg" alt="Resistance Band Set"></td><td>Resistance Band Set</td><td>Portable strength training bands.</td><td>$16</td><td><button class="btn add-to-cart" data-name="Resistance Band Set" data-price="16">Add to Cart</button></td></tr></tbody></table></div></section>
-<section><h2>Facility Gallery</h2><div class="gallery-grid"><div class="gallery-card"><img src="images/gym-floor.svg" alt="Gym floor"><h3>Gym Floor</h3><p>Open workout space with modern equipment.</p></div><div class="gallery-card"><img src="images/cardio-zone.svg" alt="Cardio zone"><h3>Cardio Zone</h3><p>Machines for endurance and heart health.</p></div><div class="gallery-card"><img src="images/free-weights.svg" alt="Free weights"><h3>Free Weights</h3><p>Strength area for focused resistance training.</p></div><div class="gallery-card"><img src="images/stretching-area.svg" alt="Stretching area"><h3>Stretching Area</h3><p>Space for warm-ups and recovery.</p></div></div></section>
-<div id="cartModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="cartTitle"><div class="modal-content"><button class="close-modal" aria-label="Close cart">&times;</button><h2 id="cartTitle">Shopping Cart</h2><ul id="cartItems"></ul><p id="cartTotal" class="cart-total"></p><button id="clearCart" class="reset-btn">Clear Cart</button><button id="processOrder" class="btn">Process Order</button><p id="cartMessage" aria-live="polite"></p></div></div>
-</main><footer class="site-footer">
+</header>
+<main id="main">
+  <section class="gallery-hero">
+    <div class="cart-top"><button id="viewCartBtn" class="primary-btn view-cart-btn" type="button">View Cart</button></div>
+    <h2>Gallery and Shop</h2>
+    <p>Explore facilities and purchase class passes, training services, and wellness products.</p>
+  </section>
+  <section class="product-section" aria-labelledby="product-table-title">
+    <h2 id="product-table-title">Product and Service Table</h2>
+    <div class="product-grid">
+      <article class="product-card"><img src="images/group-training.svg" alt="Group training class pass"><h3>Class Pass</h3><p>Drop-in access to one group class.</p><p class="price">$18</p><button class="add-to-cart" type="button" data-name="Class Pass" data-price="18">Add to Cart</button></article>
+      <article class="product-card"><img src="images/yoga-class.svg" alt="Yoga mat and studio space"><h3>Yoga Mat</h3><p>Comfortable mat for stretching and recovery.</p><p class="price">$25</p><button class="add-to-cart" type="button" data-name="Yoga Mat" data-price="25">Add to Cart</button></article>
+      <article class="product-card"><img src="images/nutrition-corner.svg" alt="Reusable fitness water bottle"><h3>Water Bottle</h3><p>Reusable bottle for workouts and classes.</p><p class="price">$12</p><button class="add-to-cart" type="button" data-name="Water Bottle" data-price="12">Add to Cart</button></article>
+      <article class="product-card"><img src="images/personal-training.svg" alt="Personal training service"><h3>Personal Training</h3><p>Individual coaching for strength, endurance, and confidence.</p><p class="price">$45</p><button class="add-to-cart" type="button" data-name="Personal Training" data-price="45">Add to Cart</button></article>
+    </div>
+  </section>
+  <section class="facility-section" aria-labelledby="facility-title">
+    <h2 id="facility-title">Facility Gallery</h2>
+    <div class="facility-grid">
+      <article><img src="images/gym-floor.svg" alt="Main gym floor"><h3>Open Floor</h3><p>Open workout space with modern equipment.</p></article>
+      <article><img src="images/cardio-zone.svg" alt="Cardio zone"><h3>Cardio Zone</h3><p>Machines for endurance and heart health.</p></article>
+      <article><img src="images/free-weights.svg" alt="Free weights area"><h3>Free Weights</h3><p>Strength area for focused resistance training.</p></article>
+      <article><img src="images/stretching-area.svg" alt="Stretching zone"><h3>Stretching Area</h3><p>Space for warm-ups and recovery.</p></article>
+    </div>
+  </section>
+  <div id="cartModal" class="cart-modal" role="dialog" aria-modal="true" aria-labelledby="cartModalTitle" hidden>
+    <div class="cart-modal-content">
+      <button id="closeCartBtn" class="close-cart" type="button" aria-label="Close shopping cart">&times;</button>
+      <h2 id="cartModalTitle">View Cart</h2>
+      <p>The currently added items are listed below.</p>
+      <ul id="cartItems"></ul>
+      <p id="cartTotal">Total: $0.00</p>
+      <div class="cart-actions"><button id="clearCartBtn" type="button">Clear Cart</button><button id="processOrderBtn" type="button">Process Order</button></div>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
   <form id="subscribeForm" class="subscribe-form" aria-label="Newsletter subscription">
     <label for="subscribeEmail">Subscribe for class updates</label>
     <input id="subscribeEmail" type="email" placeholder="Enter your email" required>
@@ -31,4 +66,6 @@
   <p><strong>FitLife Fitness Center | United States | fitlife@kal.com | +1 (656) 565-6545</strong></p>
   <p>Building strength, confidence, and healthy routines.</p>
 </footer>
-<script src="script.js"></script></body></html>
+<script src="script.js"></script>
+</body>
+</html>
